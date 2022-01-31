@@ -9,34 +9,19 @@ final class GalleryImageCollectionViewCell: UICollectionViewCell {
         imageView.layer.masksToBounds = true
         imageView.contentMode = .scaleAspectFit
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.backgroundColor = .systemGray5
+        imageView.backgroundColor = .white
         return imageView
     }()
     
-    lazy private var label: UILabel = {
-        let label = UILabel(frame: .zero)
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.backgroundColor = .white
-        label.layer.opacity = 0.7
-        return label
-    }()
+    lazy private var imageLabel = buildTriggerLabel(withText: "", withSize: 18, withWeight: .regular)
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         addSubview(imageView)
+        addSubview(imageLabel)
         layer.borderWidth = 1
         layer.borderColor = UIColor.lightGray.cgColor
-    }
-    
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        NSLayoutConstraint.activate([
-            imageView.heightAnchor.constraint(equalTo: heightAnchor),
-            imageView.widthAnchor.constraint(equalTo: widthAnchor),
-            
-//            label.bottomAnchor.constraint(equalTo: bottomAnchor, constant: 10),
-//            label.trailingAnchor.constraint(equalTo: trailingAnchor)
-        ])
+        setupConstraints()
     }
     
     required init?(coder: NSCoder) {
@@ -48,6 +33,18 @@ final class GalleryImageCollectionViewCell: UICollectionViewCell {
     }
     
     func setName(name: String?) {
-        label.text = name
+        imageLabel.text = name
+    }
+}
+
+extension GalleryImageCollectionViewCell {
+    func setupConstraints() {
+        NSLayoutConstraint.activate([
+            imageView.heightAnchor.constraint(equalTo: heightAnchor),
+            imageView.widthAnchor.constraint(equalTo: widthAnchor),
+            imageLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: imageLabel.bounds.height - 5),
+            imageLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 25),
+            imageLabel.widthAnchor.constraint(equalTo: widthAnchor, constant: -50)
+        ])
     }
 }

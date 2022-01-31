@@ -17,6 +17,12 @@ final class PaintView: UIView {
         addSubview(figurePickerView.rightGradient)
     }
     
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        print(figurePickerView.leftGradient.bounds, figurePickerView.leftGradient.frame)
+        print(figurePickerView.leftGradient.layer.sublayers?.count)
+    }
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }

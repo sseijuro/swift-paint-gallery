@@ -2,7 +2,7 @@ import UIKit
 
 struct PaintModel {
     var figureType: FigureType = .CurveLine
-    var color: CGColor = UIColor.systemRed.cgColor
+    var color: CGColor = UIColor.systemBlue.cgColor
     var width: CGFloat = 3
     var figures = [FigureModel]()
     

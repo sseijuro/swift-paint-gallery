@@ -67,8 +67,9 @@ final class PaintViewController: UIViewController, TopBarRightMenuDelegate {
             let image = renderer.image { (ctx) in
                 canvasView.drawHierarchy(in: canvasView.bounds, afterScreenUpdates: true)
             }
-            ImageStore.addImage(image: image)
-            print(name)
+            guard let name = name, name != "",
+                  FileStore.saveImage(withFileName: name, image) == true
+            else { return }
             self?.navigateBackToGallery()
         }
     }

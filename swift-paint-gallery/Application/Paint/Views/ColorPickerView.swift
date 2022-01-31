@@ -8,7 +8,6 @@ final class ColorPickerView: UITableView {
         translatesAutoresizingMaskIntoConstraints = false
         register(ColorPickerTableViewCell.self, forCellReuseIdentifier: ColorPickerTableViewCell.identifier)
         showsVerticalScrollIndicator = false
-        layer.borderWidth = 1
     }
     
     required init(coder: NSCoder) {

@@ -1,17 +1,19 @@
 import UIKit
 
 final class FigurePickerGradientView: UIView {
-    private(set) var locations: [NSNumber]
-    private(set) var startPoint: CGPoint
-    private(set) var endPoint: CGPoint
-    
-    init(locations _locations: [NSNumber] = [], startPoint _startPoint: CGPoint = .zero, endPoint _endPoint: CGPoint = .zero) {
-        locations = _locations
-        startPoint = _startPoint
-        endPoint = _endPoint
+    init(locations: [NSNumber] = [], startPoint: CGPoint = .zero, endPoint: CGPoint = .zero) {
         super.init(frame: .zero)
         translatesAutoresizingMaskIntoConstraints = false
-        backgroundColor = .systemCyan
+        let gradientLayer = CAGradientLayer()
+        gradientLayer.colors = [UIColor.systemGray, UIColor.systemGray3]
+        gradientLayer.locations = locations
+        gradientLayer.endPoint = endPoint
+        gradientLayer.startPoint = startPoint
+        gradientLayer.frame = bounds
+        gradientLayer.type = .axial
+        gradientLayer.borderWidth = 1
+        layer.insertSublayer(gradientLayer, at: 0)
+        backgroundColor = .systemGray4
     }
     
     required init?(coder: NSCoder) {

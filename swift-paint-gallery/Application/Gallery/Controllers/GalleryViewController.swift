@@ -5,8 +5,17 @@ final class GalleryViewController: UIViewController {
         view as? GalleryCollectionView
     }
     
+    private var imageUrls: [URL] {
+        FileStore.fileUrls.sorted {
+            guard let lhsDate = try? $0.resourceValues(forKeys: [.creationDateKey]).creationDate,
+                  let rhsDate = try? $1.resourceValues(forKeys: [.creationDateKey]).creationDate
+            else { return false }
+            return lhsDate > rhsDate
+        }
+    }
+    
     private var imagesCount: Int {
-        ImageStore.count
+        imageUrls.count
     }
     
     private func getImage(byIndex index: Int) -> Data? {
@@ -42,9 +51,11 @@ extension GalleryViewController: UICollectionViewDelegate, UICollectionViewDataS
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if indexPath.item != 0 {
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: GalleryImageCollectionViewCell.identifier,
-                                                          for: indexPath) as! GalleryImageCollectionViewCell
-            cell.setImage(image: UIImage(data: getImage(byIndex: indexPath.item - 1) ?? Data()))
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: GalleryImageCollectionViewCell.identifier, for: indexPath) as! GalleryImageCollectionViewCell
+            if let data = try? Data(contentsOf: imageUrls[indexPath.item - 1]) {
+                cell.setImage(image: UIImage(data: data))
+                cell.setName(name: imageUrls[indexPath.item - 1].lastPathComponent)
+            }
             return cell
         }
         return collectionView.dequeueReusableCell(withReuseIdentifier: GalleryActionCollectionViewCell.identifier, for: indexPath)
@@ -54,7 +65,7 @@ extension GalleryViewController: UICollectionViewDelegate, UICollectionViewDataS
         if indexPath.item == 0 {
             navigateToPaintController()
         } else {
-            if let data = getImage(byIndex: indexPath.item - 1),
+            if let data = try? Data(contentsOf: imageUrls[indexPath.item - 1]),
                let image = UIImage(data: data) {
                 let galleryImageViewController = GalleryImageViewController()
                 galleryImageViewController.setImage(image)
@@ -69,7 +80,7 @@ extension GalleryViewController: UICollectionViewDelegate, UICollectionViewDataS
                                 .frame.height else { return }
         if scrollView.contentOffset.y > cellHeight - scrollView.safeAreaInsets.top {
             if navigationItem.rightBarButtonItem == nil {
-                let button = PaintButton(size: 30, systemName: "plus")
+                let button = PaintButton(size: 30, systemName: "plus", color: .black, weight: .bold)
                 button.addTarget(self, action: #selector(navigateToPaintController), for: .touchUpInside)
                 navigationItem.rightBarButtonItem = UIBarButtonItem(customView: button)
             }
