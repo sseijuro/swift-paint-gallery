@@ -50,7 +50,7 @@ final class PaintViewController: UIViewController, TopBarRightMenuDelegate {
     }
     
     func navigateBackToGallery() {
-        navigationController?.popViewController(animated: false)
+        navigationController?.popToRootViewController(animated: true)
     }
     
     @objc func undoPreviousDraw() {

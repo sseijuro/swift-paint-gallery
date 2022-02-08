@@ -19,8 +19,6 @@ final class PaintView: UIView {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        print(figurePickerView.leftGradient.bounds, figurePickerView.leftGradient.frame)
-        print(figurePickerView.leftGradient.layer.sublayers?.count)
     }
     
     required init?(coder: NSCoder) {

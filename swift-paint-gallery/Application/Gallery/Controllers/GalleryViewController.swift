@@ -25,11 +25,12 @@ final class GalleryViewController: UIViewController {
     override func loadView() {
         super.loadView()
         view = GalleryCollectionView(frame: view.bounds)
+        updateTitle()
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = "Gallery [\(imagesCount)]"
+        navigationItem.backButtonDisplayMode = .minimal
         galleryCollectionView?.delegate = self
         galleryCollectionView?.dataSource = self
     }
@@ -37,10 +38,16 @@ final class GalleryViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         galleryCollectionView?.reloadData()
+        updateTitle()
     }
     
     @objc private func navigateToPaintController() {
-        navigationController?.pushViewController(PaintViewController(), animated: false)
+//        navigationController?.pushViewController(PaintViewController(), animated: false)
+        navigationController?.pushViewController(MenuViewController(), animated: true)
+    }
+    
+    func updateTitle() {
+        title = "Gallery [\(imagesCount)]"
     }
 }
 
